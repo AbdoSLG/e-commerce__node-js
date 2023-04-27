@@ -1,0 +1,111 @@
+<%- include('./components/header.ejs') %> <%- include('./components/navbar.ejs')
+%>
+
+<div class="home">
+  <%if(products&&products.length){%>
+  <div class="filter container">
+    <form class="center gap-2 p-3" action="/" method="GET">
+      <select
+        name="category"
+        class="form-select"
+        aria-label="Default select example"
+      >
+        <option value="all">All</option>
+        <option value="clothes">Clothes</option>
+        <option value="electronics">Electronics</option>
+        <option value="other">Other</option>
+      </select>
+      <button type="submit" class="btn btn-success">Filter</button>
+    </form>
+  </div>
+  <%}%> 
+
+  <% if(validationErr){%>
+    <p class="alert alert-danger text-center"><%= validationErr.msg%></p>
+  <% } %>
+
+  <% if(adminErr){%>
+    <p class="alert alert-danger text-center"><%= adminErr.msg%></p>
+  <% } %>
+
+  <div class="container products d-flex justify-content-start align-items-center gap-3">
+    <%if(products&&products.length){%> 
+    <% for (let i = 0; i < products.length; i++) { %>
+    <div class="product">
+      <div class="image">
+        <img src="/<%=  products[i].image %>" alt="" />
+      </div>
+      <div class="text p-1">
+        <a
+          target="_blank"
+          href="/product/<%= products[i]._id %>"
+          class="name fs-5 text-capitalize"
+        >
+          <%= products[i].name %>
+        </a>
+        <p>Price: <span class="price bold"><%= products[i].price %></span></p>
+        <p>
+          Category:
+          <span class="category bold"><%= products[i].category %></span>
+        </p>
+        <p class="description"><%= products[i].description %></p>
+        <div class="center">
+          <button class="btn btn-success show">Add to cart</button>
+        </div>
+      </div>
+      <div class="control center bg-dark">
+        <span class="center close">x</span>
+        <form
+          class="d-flex flex-column gap-2"
+          action="/addToCart"
+          method="POST"
+        >
+          <%if(products[i].category =="clothes"){%>
+          <div class="center gap-2">
+            <label class="text-light"> Size </label>
+            <select
+              class="form-select"
+              name="size"
+              aria-label="Default select example"
+            >
+              <option selected value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="2X">2X</option>
+              <option value="3X">3X</option>
+            </select>
+          </div>
+
+          <%}%>
+          <div class="d-flex gap-2 justify-content-center align-items-center">
+            <label class="text-light"> QTY </label>
+            <input class="form-control" type="number" name="amount" />
+
+            <input
+              type="hidden"
+              name="price"
+              value="<%= products[i].price %>"
+            />
+            <input type="hidden" name="name" value="<%= products[i].name %>" />
+            <input type="hidden" name="productId" value="<%= products[i]._id %>" />
+            <input type="hidden" name="description" value="<%= products[i].description %>" />
+            <input type="hidden" name="image" value="<%= products[i].image %>" />
+            <input type="hidden" name="category" value="<%= products[i].category %>" />
+
+            <input type="hidden" name="redirectTo" value="/" />
+          </div>
+
+          <div class="center">
+            <button type="submit" class="btn btn-warning">Add to cart</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <%}%> 
+    <%}else{%>
+    <div class="alert alert-danger mt-3">There is no product</div>
+    <%}%>
+  </div>
+</div>
+
+<%- include('./components/footer.ejs') %>

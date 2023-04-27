@@ -1,0 +1,47 @@
+<%- include('./components/header.ejs') %>
+<%- include('./components/navbar.ejs') %>
+
+<% if(addProductErr){ %>
+   <p class="alert alert-danger text-center"> <%= addProductErr %> </p>
+<% } %>
+
+
+<%
+   const imageErr = validationFields.find(err=>err.path=='image');
+   const nameErr = validationFields.find(err=>err.path=='name');
+   const priceErr = validationFields.find(err=>err.path=='price');
+   const descriptionErr = validationFields.find(err=>err.path=='description');
+%>
+
+<% if(validationFields && validationFields.length){ %>
+   <%for(let err of validationFields){ %>
+      <p class="alert alert-danger text-center">
+         <%= err.msg %>
+      </p>
+   <% } %>
+<% } %>
+
+
+<div class="container ">
+   <form class="mt-5" action="/admin/addProduct" method="post" enctype="multipart/form-data">
+      
+      <input class="form-control mt-2" type="text" name="name" placeholder="name">
+      
+      <input class="form-control mt-2" type="number" name="price" placeholder="price">
+      
+      <select class="form-control mt-2" name="category" >
+         <option value="clothes">clothes</option>
+         <option value="electronics">electronics</option>
+         <option value="other">other</option>
+      </select>
+      
+      <textarea class="form-control mt-2" name="description" placeholder="description"></textarea>
+      
+      <input class="form-control mt-2 " type="file" name="image">
+      <!-- <p class="invalid-feedback d-block"> <%#= validationImageErr %> </p> -->
+
+      <button class="btn btn-primary mt-2">Add Product</button>
+   </form>
+</div>
+
+<%- include('./components/footer.ejs') %>

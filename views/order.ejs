@@ -1,0 +1,94 @@
+<%- include('./components/header.ejs') %>
+
+
+<%- include('./components/navbar.ejs') %>
+
+
+<% 
+   let allPrice =0;
+   if(orders && orders.length){
+      for(let order of orders){ 
+         allPrice += order.price
+      }
+   }
+%>
+
+<div class="order cart">
+      <div class="container p-4 rounded ">
+         <div class="d-flex justify-content-between">
+            <h2 class="text-capitalize ">Your Orders </h2>
+            <p class="price-all bold fs-4"> All Products: EGY <%= allPrice %> </p>
+         </div>
+         <% if(orders && orders.length){ %>
+            <p class="text-end px-3 fs-5 m-0">Price</p>
+         <% }%>
+   
+         <% if(orders && orders.length){ %>
+            <% for(let order of orders){ %>
+               <div class="products pt-2">
+                  <div class="product d-flex justify-content-between ">
+                     <div class="image">
+                        <img src="/<%= order.image %>" alt="">
+                     </div>
+                     <div class="info d-flex flex1 justify-content-between align-items-start">
+                        <div class="details d-flex flex-column justify-content-around h-100 ">
+                           <a class="name text-capitalize fw-500 fs-5" target="_blank" href="/product/<%= order.productId %>">
+                              <%= order.name %>
+                           </a>
+   
+                           <% if(order.category == 'clothes'){ %>
+                              <div class="size text-capitalize fw-500 fs-5">
+                                 Size: <%= order.size %>
+                              </div>
+                              <% } %>
+                              
+                           <div class="text-capitalize fw-500 fs-5">
+                              QTY: <%= order.amount %>
+                           </div>
+                           
+                     
+                        </div>
+
+                        <div class="d-flex h-100 flex-column justify-content-around">
+                           <div class=" fw-500 fs-5">
+                              Status: <%= order.status %>
+                           </div>
+                           <div class="address  fw-500 fs-5">
+                              Address: <%= order.address %>
+                           </div>
+                           <div class="time  fw-500 fs-5">
+                              <%if(order.description.length > 15){%>
+                                 <%= order.description.slice(0, 15) %> ...
+                              <%}else{%>
+                                 <%= order.description %> .
+                              <%}%>
+                           </div>
+                        </div>
+
+                        <div class="d-flex h-100 align-items-end flex-column justify-content-between">
+                           <div class="price bold fs-5">
+                              <span>EGY</span> <%= order.price %>
+                           </div>
+                           <div class="control">
+                              <form action="/order/remove" method="post">
+                                 <input type="hidden" name="productId" value="<%= order.productId %>">
+                                 <input type="hidden" name="size" value="<%= order.size %>">
+                                 <input type="hidden" name="address" value="<%= order.address %>">
+                                 <button class="btn btn-danger">Remove</button>
+                              </form>
+                           </div>
+                        </div>
+                     </div>
+                     
+                  </div>
+         </div>
+         <% } %>
+         <% }else{ %>
+            <p class="fs-4 fw-bold text-center">There is no products you order it</p>
+         <% } %>
+         
+      </div>
+</div>
+
+<%- include('./components/footer.ejs') %>
+

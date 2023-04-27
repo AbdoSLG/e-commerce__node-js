@@ -1,0 +1,89 @@
+<%- include('./components/header.ejs') %>
+
+
+<%- include('./components/navbar.ejs') %>
+
+<%- include('./components/filter.ejs') %>
+
+<div class="cart test">
+   <div class="container ">
+   
+         <% if(orders && orders.length){ %>
+            <div class="orders">
+            <% for(let order of orders){ %>
+               <div class="products pt-2">
+                  <div class="product d-flex justify-content-between ">
+                     <div class="image">
+                        <img src="/<%= order.image %>" alt="">
+                     </div>
+                     <div class="info d-flex flex1 justify-content-between align-items-start">
+                        <div class="details d-flex flex-column justify-content-around h-100 ">
+                           <a class="name text-capitalize fw-500 fs-5" target="_blank" href="/product/<%= order.productId %>">
+                              <%= order.name %>
+                           </a>
+   
+                           <% if(order.category == 'clothes'){ %>
+                              <div class="size text-capitalize fw-500 fs-5">
+                                 Size: <%= order.size %>
+                              </div>
+                           <% } %>
+   
+                           <div class="text-capitalize fw-500 fs-5">
+                              EGY: <%= order.price %>
+                           </div>
+                              
+                           <div class="text-capitalize fw-500 fs-5">
+                              QTY: <%= order.amount %>
+                           </div>
+                        </div>
+   
+                        <div class="d-flex h-100 flex-column justify-content-around">
+                           <div class=" center gap-1 fw-500 fs-5">
+                              <form class=" center gap-1 fw-500 fs-5" action="/admin/modify" method="post">
+                                 <select class="form-control" name="status" id="">
+                                    <option value="pending">pending</option>
+                                    <option value="sent">sent</option>
+                                    <option value="completed">completed</option>
+                                 </select>
+                                 <input type="hidden" name="_id" value="<%= order._id %>">
+                                 <button class="btn btn-dark">Modify</button>
+                              </form>
+                           </div>
+                           <div class="fw-500 fs-5">
+                              Status: <%= order.status %>
+                           </div>
+                           <div class="address  fw-500 fs-5">
+                              Address: <%= order.address %>
+                           </div>
+                           <div class="time  fw-500 fs-5">
+                              <%if(order.description.length > 15){%>
+                                 <%= order.description.slice(0, 15) %> ...
+                              <%}else{%>
+                                 <%= order.description %> .
+                              <%}%>
+                           </div>
+                        </div>
+   
+                        <div class="d-flex h-100 align-items-end flex-column justify-content-start">
+                           <div class="fw-500 fs-5">
+                              username: <%= order.username %>
+                           </div>
+                           <div class="fw-500 fs-5">
+                              email: <%= order.email %>
+                           </div>
+                        </div>
+                     </div>
+                     
+                  </div>
+         </div>
+         <% } %>
+         </div>
+         <% }else{ %>
+            <p class="fs-4 fw-bold text-center">There is no user matches this name</p>
+         <% } %>
+         
+      </div>
+      </div>
+
+<%- include('./components/footer.ejs') %>
+

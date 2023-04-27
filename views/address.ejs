@@ -1,0 +1,45 @@
+<%- include('./components/header.ejs') %>
+<%- include('./components/navbar.ejs') %>
+
+<% if(error){ %>
+   <p class="alert alert-danger text-center">
+      <%= error.msg %>
+   </p>
+<% } %>
+
+<% if(validationErrs && validationErrs.length ){ %>
+<% for(let err of validationErrs){ %>
+   <p class="alert alert-danger text-center">
+      <%= err.msg %>
+   </p>
+<% } %>
+<% } %>
+
+<div class="address">
+   <div class="container mt-5">
+      <form class="d-flex gap-2" action="/address/add" method="post">
+         <input class="form-control fs-5" type="text" name="address" placeholder="Add address">
+         <button class="btn btn-primary"> Add address  </button>
+      </form>
+      
+      <% if(addresses && addresses.length){ %>
+         
+         <% for(let address of addresses){ %>
+            <form class=" mt-2" action="/address/delete" method="post">
+                  <div class="address d-flex justify-content-between align-items-center mt-2">
+                  <label for="<%= address._id %>"> <%= address.address %> </label>
+                  <input type="hidden" name="addressId" value="<%= address._id%>">
+                  <input type="hidden" name="userId" value="<%= address.userId%>">
+                  <button class="btn btn-danger"> Delete address </button>
+               </div>
+            </form>
+         <% } %>
+               
+      <% }else{ %>
+         <p class="fs-4 mt-2 bold">There is no addresses</p>
+      <% } %>
+   </div>
+</div>
+
+
+<%- include('./components/footer.ejs') %>

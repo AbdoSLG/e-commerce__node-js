@@ -1,0 +1,40 @@
+<%- include('./components/header.ejs') %> <%- include('./components/navbar.ejs')
+%>
+
+
+<% if(authErr){ %>
+  <div class="container center mt-3" >
+     <div class="alert alert-danger">
+        <%= authErr %>
+     </div>
+  </div>
+<% } %>
+
+
+<% 
+   const emailErr = validationErrs.find(err=>err.path=='email');
+   const passwordErr = validationErrs.find(err=>err.path=='password');
+%>
+
+
+<div class="login">
+  <div class="container center mt-5 p-3 border rounded" style="width: 280px;">
+    <form class="d-flex flex-column gap-2 justify-content-center align-items-center" action="/login" method="post" style="width: 280px;">
+      <input class="form-control" name="email" type="email" placeholder="Enter your email" />
+        <% if(emailErr){ %>
+          <div class="invalid-feedback d-block m-0">
+            <%= emailErr.msg %>
+          </div>
+        <% } %>
+      <input class="form-control" name="password" type="password" placeholder="Enter your password" />
+        <% if(passwordErr){ %>
+          <div class="invalid-feedback d-block m-0">
+            <%= passwordErr.msg %>
+          </div>
+        <% } %>
+      <button class="btn btn-success" type="submit">Login</button>
+    </form>
+  </div>
+</div>
+
+<%- include('./components/footer.ejs') %>

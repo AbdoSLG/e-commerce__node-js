@@ -1,0 +1,96 @@
+<%- include('./components/header.ejs') %>
+
+
+<%- include('./components/navbar.ejs') %>
+
+<div class="cart">
+   <div class="container p-4 rounded ">
+      <h2 class="text-capitalize ">shopping cart <i class="fa-solid fa-cart-shopping"></i></h2>
+      
+      <% if(products && products.length){ %>
+         <p class="text-end px-3 fs-5 m-0">Price</p>
+         <% }%>
+
+      <% if(products && products.length){ %>
+         <% for(let product of products){ %>
+            <div class="products pt-2">
+               
+               <div class="product d-flex justify-content-between ">
+                  <div class="image">
+                     <img src="/<%= product.image %>" alt="">
+                  </div>
+                  <div class="info d-flex flex1 justify-content-between align-items-start">
+                     <div class="details d-flex flex-column justify-content-around h-100 ">
+                        <a class="name text-capitalize fw-500 fs-5" target="_blank" href="/product/<%= product.productId %>">
+                           <%= product.name %>
+                        </a>
+
+                        <% if(product.category == 'clothes'){ %>
+                           <div class="size text-capitalize fw-500 fs-5">
+                              Size: <%= product.size %>
+                           </div>
+                        <% } %>
+                  
+                        <form action="/modifyQty" method="post">
+                           <div class="center gap-1 text-capitalize fw-500 fs-5">
+                              <label for="">QTY</label>
+                              <input class="form-control" value="<%= product.amount %>" type="number" name="amount" >
+                              <input type="hidden" name="productId" value="<%= product.productId %>">
+                              <button class="btn btn-success">Modify</button>
+                           </div>
+                        </form>
+                  
+                     </div>
+                     <div class="d-flex h-100 align-items-end flex-column justify-content-between">
+                        <div class="price bold fs-4">
+                           <span>EGY</span> <%= product.price * product.amount  %>
+                        </div>
+                        <div class="controls pb-3">
+                           <form class="d-flex gap-1"> 
+                              <input type="hidden" name="productId" value="<%= product.productId %>">
+                              <button class="btn btn-primary show-menu-order">Order</button>
+                              <button formaction="/deleteFromCart" formmethod="post" class="btn btn-danger">Delete</button>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="order center flex-column">
+                     <% if(addresses && addresses.length){ %>
+                        <form class="center flex-column gap-1" action="/order" method="post">
+                           <select class="form-control" name="address" id="">
+                              <% for(let address of addresses){ %>
+                                 <option value="<%= address.address %>"><%= address.address %></option>
+                              <% } %>
+                           </select>
+                           <input type="hidden" name="name" value="<%= product.name %>">
+                           <input type="hidden" name="price" value="<%= product.price %>">
+                           <input type="hidden" name="category" value="<%= product.category %>">
+                           <input type="hidden" name="productId" value="<%= product.productId %>">
+                           <input type="hidden" name="amount" value="<%= product.amount %>">
+                           <input type="hidden" name="size" value="<%= product.size %>">
+                           <input type="hidden" name="description" value="<%= product.description %>">
+                           <input type="hidden" name="image" value="<%= product.image %>">
+                           <input type="hidden" name="address" value="<%= product.address %>">
+                           <button class="btn btn-primary">Order now</button>
+                        </form>
+                     <% }else{ %>
+                        <p>You have no addresses</p>
+                        <button class="btn btn-primary">
+                           <a class="text-light" href="/address">Click me to add address</a>
+                        </button>
+                     <% } %>
+
+                  </div>
+               </div>
+      </div>
+      <% } %>
+      <% }else{ %>
+         <p class="fs-4 fw-bold text-center">There is no items in your cart</p>
+      <% } %>
+      
+   </div>
+</div>
+
+
+<%- include('./components/footer.ejs') %>
+
